@@ -1,27 +1,83 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>ShipTech Shipyard</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        background-color: black;
-      }
-      .sketchfab-embed-wrapper {
-        height: 100%;
-        width: 100%; /* Ensure the div takes full width */
-      }
-      iframe {
-        height: 100%;
-        width: 100%; /* Set iframe width to 100% */
-        border: none; /* Optional: removes the iframe border */
-      }
-    </style>
-  </head>
-  <div class="sketchfab-embed-wrapper"> <iframe title="ShipTech Shipyard" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/369f9b1133b4473880f258d950cde854/embed?autostart=1&camera=0&annotations_visible=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_watermark_link=0&ui_watermark=0&ui_hint=0&ui_ar=0&ui_help=0&ui_settings=0"> </iframe> </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>ShipTech Shipyard</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+    }
+    .sketchfab-embed-wrapper {
+      height: 100%;
+      width: 100%; /* Ensure the div takes full width */
+      position: relative;
+    }
+    iframe {
+      height: 100%;
+      width: 100%; /* Set iframe width to 100% */
+      border: none; /* Optional: removes the iframe border */
+    }
+  </style>
+  <script src="https://static.sketchfab.com/api/sketchfab-viewer-1.12.0.js"></script>
+</head>
+<body>
+  <div class="sketchfab-embed-wrapper">
+    <iframe id="sketchfab-iframe" 
+            title="ShipTech Shipyard" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            src="https://sketchfab.com/models/369f9b1133b4473880f258d950cde854/embed?autostart=1&camera=0&annotations_visible=1&ui_infos=0&ui_stop=0&ui_inspector=0&ui_watermark_link=0&ui_watermark=0&ui_hint=0&ui_ar=0&ui_help=0&ui_settings=0">
+    </iframe>
+  </div>
+  <script>
+    var iframe = document.getElementById('sketchfab-iframe');
+    var client = new Sketchfab(iframe);
+
+    client.init('369f9b1133b4473880f258d950cde854', {
+      success: function onSuccess(api) {
+        api.start();
+        api.addEventListener('viewerready', function() {
+          console.log('Viewer is ready');
+          api.play(); // Start animations
+
+          // Find the animation named 'ShipTech' and set it as the active animation
+          api.getAnimations(function(err, animations) {
+            if (!err) {
+              var shipTechAnimation = animations.find(function(animation) {
+                return animation[1] === 'ShipTech';
+              });
+              if (shipTechAnimation) {
+                api.setCurrentAnimationByUID(shipTechAnimation[0], function(err) {
+                  if (!err) {
+                    console.log('Set animation track to', shipTechAnimation[0]);
+                  }
+                });
+              }
+            }
+          });
+        });
+      },
+      error: function onError() {
+        console.log('Viewer error');
+      },
+      autostart: 1,
+      camera: 0,
+      annotations_visible: 1,
+      ui_infos: 0,
+      ui_stop: 0,
+      ui_inspector: 0,
+      ui_watermark_link: 0,
+      ui_watermark: 0,
+      ui_hint: 0,
+      ui_ar: 0,
+      ui_help: 0,
+      ui_settings: 0
+    });
+  </script>
+</body>
 </html>
